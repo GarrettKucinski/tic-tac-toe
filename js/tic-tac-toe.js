@@ -2,7 +2,8 @@
 
 const TicTacToe = {};
 
-TicTacToe.board = (function() {
+TicTacToe.board = (function($) {
+
     const squares = [];
 
     const add = (square) => {
@@ -17,11 +18,12 @@ TicTacToe.board = (function() {
         viewArray: viewArray,
         add: add
     };
-})();
 
-TicTacToe.square = (function() {
+})(Sizzle);
+
+TicTacToe.square = (function($) {
     // Some properties and methods go here
-})();
+})(Sizzle);
 
 TicTacToe.board.add('hello');
 TicTacToe.board.add('World');
