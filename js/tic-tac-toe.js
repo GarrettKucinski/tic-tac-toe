@@ -1,6 +1,6 @@
 "use strict";
 
-var TicTacToe = TicTacToe || {};
+const TicTacToe = {};
 
 TicTacToe.board = (function() {
     const squares = [];
