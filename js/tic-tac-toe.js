@@ -20,12 +20,23 @@ const TicTacToe = (function($) {
         };
 
     };
-    const playerOne = new Player('o.svg', 'Garrett');
-    const playerTwo = new Player('x.svg', 'Jamie');
+    const playerOne = new Player('o.svg', 'player1');
+    const playerTwo = new Player('x.svg', 'player2');
 
     let currentPlayer = playerOne;
 
-    const selectBox = _ => {
+    const switchPlayer = () => {
+        $(`#${currentPlayer.name}`)[0].classList.remove('active');
+
+        currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+        currentPlayer.setPlayerBoxBackground();
+
+        $(`#${currentPlayer.name}`)[0].classList.add('active');
+
+        return currentPlayer;
+    };
+
+    const playerTurn = _ => {
         for (let box of boxList) {
             box.addEventListener('click', _ => {
                 switchPlayer();
@@ -33,14 +44,11 @@ const TicTacToe = (function($) {
         }
     };
 
-    const switchPlayer = () => {
-        currentPlayer = $('.player1.active') ? playerTwo : playerOne;
-        currentPlayer.setPlayerBoxBackground();
-    };
-
     const init = _ => {
         console.log('game started');
-        $('#player1')[0].classList += ' active';
+        $(`#${currentPlayer.name}`)[0].classList.add('active');
+        currentPlayer.setPlayerBoxBackground();
+        playerTurn();
     };
 
     return {
