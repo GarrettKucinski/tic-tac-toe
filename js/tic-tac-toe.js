@@ -12,8 +12,8 @@ const TicTacToe = (function($) {
         this.marker = marker;
     };
 
-    // Add a method to retrieve the correct background image 
-    // for each player instance
+    // Add a method to retrieve the correct 
+    // background image for each player instance
     Player.prototype.getBoxBackground = function() {
         return `url("./img/${this.backgroundImage}")`;
     };
@@ -24,6 +24,15 @@ const TicTacToe = (function($) {
 
     // Set the initial currentPlayer to player one at the start of the game
     let currentPlayer = playerOne;
+
+    // Provide a method for element creation
+    const createElement = (name, id, content = '') => {
+        const el = document.createElement(name);
+        el.id = id;
+        el.innerText = content;
+
+        return el;
+    };
 
     // Set the box background on hover depending on who the current player is
     const setPlayerBoxBackground = function() {
@@ -38,6 +47,37 @@ const TicTacToe = (function($) {
 
         boxList.addEventListener('mouseover', handleBoxMouseOver, true);
         boxList.addEventListener('mouseleave', handleBoxMouseLeave, true);
+    };
+
+    // Create the game start screen and display it
+    const showStartScreen = () => {
+        const gameBoard = document.getElementById('board'),
+            startContainer = createElement('div', 'start-screen'),
+            startHeader = createElement('header', 'start-header'),
+            startButton = createElement('button', 'start-button', 'Start Game'),
+            startHeading = createElement('h1', 'start-heading', 'Tic Tac Toe');
+
+        startContainer.classList.add('screen');
+        startContainer.classList.add('screen-start');
+        startButton.classList.add('button');
+
+        startHeader.appendChild(startHeading);
+        startHeader.appendChild(startButton);
+
+        startContainer.appendChild(startHeader);
+
+        gameBoard.appendChild(startContainer);
+    };
+
+    // Provide the logic allowing a player to initialize the game
+    const startGame = () => {
+        const startButton = document.getElementById('start-button');
+        const startContainer = document.getElementById('start-screen');
+        startButton.addEventListener('click', _ => {
+            startContainer.style.display = 'none';
+        });
+        $(`#${currentPlayer.name}`)[0].classList.add('active');
+        setPlayerBoxBackground();
     };
 
     // Call this function when a box is selected to end the current players 
@@ -68,8 +108,8 @@ const TicTacToe = (function($) {
     // and set the box hover background to that players icon
     const init = _ => {
         console.log('game started');
-        $(`#${currentPlayer.name}`)[0].classList.add('active');
-        setPlayerBoxBackground();
+        showStartScreen();
+        startGame();
     };
 
     // Expose the methods to allow the game to be played
