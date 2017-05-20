@@ -1,30 +1,52 @@
 "use strict";
 
-const TicTacToe = {};
+const TicTacToe = (function($) {
 
-TicTacToe.board = (function($) {
+    const boxList = $('.box');
 
-    const squares = [];
+    const Player = function(background, name) {
+        this.backgroundImage = background;
+        this.name = name;
 
-    const add = (square) => {
-        squares.push(square);
+        this.setPlayerBoxBackground = _ => {
+            for (let box of boxList) {
+                box.addEventListener('mouseover', _ => {
+                    box.style.backgroundImage = `url("./img/${this.backgroundImage}")`;
+                });
+                box.addEventListener('mouseleave', _ => {
+                    box.style.backgroundImage = '';
+                });
+            }
+        };
+
+    };
+    const playerOne = new Player('o.svg', 'Garrett');
+    const playerTwo = new Player('x.svg', 'Jamie');
+
+    let currentPlayer = playerOne;
+
+    const selectBox = _ => {
+        for (let box of boxList) {
+            box.addEventListener('click', _ => {
+                switchPlayer();
+            });
+        }
     };
 
-    const viewArray = () => {
-        console.log(squares);
+    const switchPlayer = () => {
+        currentPlayer = $('.player1.active') ? playerTwo : playerOne;
+        currentPlayer.setPlayerBoxBackground();
+    };
+
+    const init = _ => {
+        console.log('game started');
+        $('#player1')[0].classList += ' active';
     };
 
     return {
-        viewArray: viewArray,
-        add: add
+        init: init
     };
 
-})(Sizzle);
+}(Sizzle));
 
-TicTacToe.square = (function($) {
-    // Some properties and methods go here
-})(Sizzle);
-
-TicTacToe.board.add('hello');
-TicTacToe.board.add('World');
-TicTacToe.board.viewArray();
+TicTacToe.init();
