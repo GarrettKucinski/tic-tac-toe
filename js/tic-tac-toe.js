@@ -2,34 +2,40 @@
 
 const TicTacToe = (function($) {
 
-    const boxList = $('.box');
+    const boxList = $('.boxes')[0];
 
-    const Player = function(background, name) {
-        this.backgroundImage = background;
+    const Player = function(name, background, marker) {
         this.name = name;
-
-        this.setPlayerBoxBackground = _ => {
-            for (let box of boxList) {
-                box.addEventListener('mouseover', _ => {
-                    box.style.backgroundImage = `url("./img/${this.backgroundImage}")`;
-                });
-                box.addEventListener('mouseleave', _ => {
-                    box.style.backgroundImage = '';
-                });
-            }
-        };
-
+        this.backgroundImage = background;
+        this.marker = marker;
     };
-    const playerOne = new Player('o.svg', 'player1');
-    const playerTwo = new Player('x.svg', 'player2');
+
+    Player.prototype.getBoxBackground = function() {
+        return `url("./img/${this.backgroundImage}")`;
+    };
+
+    const playerOne = new Player('player1', 'o.svg', 'box-filled-1');
+    const playerTwo = new Player('player2', 'x.svg', 'box-filled-2');
 
     let currentPlayer = playerOne;
+
+    const setPlayerBoxBackground = function() {
+        const handleBoxMouseOver = e => {
+            e.target.style.backgroundImage = currentPlayer.getBoxBackground();
+        };
+        const handleBoxMouseLeave = e => {
+            e.target.style.backgroundImage = '';
+        };
+
+        boxList.addEventListener('mouseover', handleBoxMouseOver, true);
+        boxList.addEventListener('mouseleave', handleBoxMouseLeave, true);
+    };
 
     const switchPlayer = () => {
         $(`#${currentPlayer.name}`)[0].classList.remove('active');
 
         currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
-        currentPlayer.setPlayerBoxBackground();
+        setPlayerBoxBackground();
 
         $(`#${currentPlayer.name}`)[0].classList.add('active');
 
@@ -37,24 +43,28 @@ const TicTacToe = (function($) {
     };
 
     const playerTurn = _ => {
-        for (let box of boxList) {
-            box.addEventListener('click', _ => {
-                switchPlayer();
-            });
-        }
+        const handleBoxClick = e => {
+            if (!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
+                e.target.classList.add(`${currentPlayer.marker}`);
+            }
+            switchPlayer();
+            e.target.removeEventListener('click', handleBoxClick, true);
+        };
+        boxList.addEventListener('click', handleBoxClick, true);
     };
 
     const init = _ => {
         console.log('game started');
         $(`#${currentPlayer.name}`)[0].classList.add('active');
-        currentPlayer.setPlayerBoxBackground();
-        playerTurn();
+        setPlayerBoxBackground();
     };
 
     return {
-        init: init
+        init: init,
+        playerTurn: playerTurn
     };
 
 }(Sizzle));
 
 TicTacToe.init();
+TicTacToe.playerTurn();
