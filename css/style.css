@@ -201,3 +201,11 @@ h1 {
     background-color: #3688C3;
     background-image: url(../img/x.svg);
 }
+
+.boxes .player1-box-hover {
+    background-image: url(../img/o.svg);
+}
+
+.boxes .player2-box-hover {
+    background-image: url(../img/x.svg);
+}

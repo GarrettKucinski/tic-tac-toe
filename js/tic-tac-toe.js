@@ -21,10 +21,12 @@ const TicTacToe = (function($) {
 
     const setPlayerBoxBackground = function() {
         const handleBoxMouseOver = e => {
-            e.target.style.backgroundImage = currentPlayer.getBoxBackground();
+            if (!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
+                e.target.classList.add(`${currentPlayer.name}-box-hover`);
+            }
         };
         const handleBoxMouseLeave = e => {
-            e.target.style.backgroundImage = '';
+            e.target.classList.remove(`${currentPlayer.name}-box-hover`);
         };
 
         boxList.addEventListener('mouseover', handleBoxMouseOver, true);
@@ -46,9 +48,8 @@ const TicTacToe = (function($) {
         const handleBoxClick = e => {
             if (!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
                 e.target.classList.add(`${currentPlayer.marker}`);
+                switchPlayer();
             }
-            switchPlayer();
-            e.target.removeEventListener('click', handleBoxClick, true);
         };
         boxList.addEventListener('click', handleBoxClick, true);
     };
