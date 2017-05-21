@@ -27,6 +27,7 @@ h1 {
     text-decoration: none;
     -webkit-transition: 0.25s ease;
     transition: 0.25s ease;
+    border: none;
 }
 
 .button:hover {

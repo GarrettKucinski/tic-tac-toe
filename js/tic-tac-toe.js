@@ -4,12 +4,16 @@ const TicTacToe = (function($) {
 
     // Select box list for use later
     const boxList = $('.boxes')[0];
+    const gameBoard = document.getElementById('board');
+    const body = document.getElementsByTagName('body')[0];
+    let playerWon = false;
 
     // Create the Player object
-    const Player = function(name, background, marker) {
+    const Player = function(name, background, marker, winner) {
         this.name = name;
         this.backgroundImage = background;
         this.marker = marker;
+        this.winner = winner;
     };
 
     // Add a method to retrieve the correct 
@@ -19,16 +23,17 @@ const TicTacToe = (function($) {
     };
 
     // Instantiate a Player instace for each player
-    const playerOne = new Player('player1', 'o.svg', 'box-filled-1');
-    const playerTwo = new Player('player2', 'x.svg', 'box-filled-2');
+    const playerOne = new Player('player1', 'o.svg', 'box-filled-1', 'screen-win-one');
+    const playerTwo = new Player('player2', 'x.svg', 'box-filled-2', 'screen-win-two');
 
     // Set the initial currentPlayer to player one at the start of the game
     let currentPlayer = playerOne;
 
     // Provide a method for element creation
-    const createElement = (name, id, content = '') => {
+    const createElement = (name, id, className = '', content = '') => {
         const el = document.createElement(name);
         el.id = id;
+        el.className = className;
         el.innerText = content;
 
         return el;
@@ -51,22 +56,34 @@ const TicTacToe = (function($) {
 
     // Create the game start screen and display it
     const showStartScreen = () => {
-        const gameBoard = document.getElementById('board'),
-            startContainer = createElement('div', 'start-screen'),
+        const startContainer = createElement('div', 'start-screen', 'screen screen-start'),
             startHeader = createElement('header', 'start-header'),
-            startButton = createElement('button', 'start-button', 'Start Game'),
-            startHeading = createElement('h1', 'start-heading', 'Tic Tac Toe');
-
-        startContainer.classList.add('screen');
-        startContainer.classList.add('screen-start');
-        startButton.classList.add('button');
-
-        startHeader.appendChild(startHeading);
-        startHeader.appendChild(startButton);
+            startButton = createElement('button', 'start-button', 'button', 'Start Game'),
+            startHeading = createElement('h1', 'start-heading', undefined, 'Tic Tac Toe');
 
         startContainer.appendChild(startHeader);
+        startHeader.appendChild(startHeading);
+        startHeader.appendChild(startButton);
+        body.appendChild(startContainer);
+    };
 
-        gameBoard.appendChild(startContainer);
+    const gameOver = () => {
+        // Remove these two variables when app is complete
+        // currentPlayer = playerTwo;
+        // playerWon = true;
+        const winner = playerWon ? currentPlayer.winner : 'screen-win-tie';
+        const message = playerWon ? 'Winner!' : 'It\'s a tie!';
+        const winContainer = createElement('div', 'finish', `screen screen-win ${winner}`, undefined),
+            winHeader = createElement('header', 'win-header', 'win-header', undefined),
+            resetButton = createElement('button', undefined, 'button', 'New Game'),
+            winHeading = createElement('h1', 'win-heading', 'win-heading', 'Tic Tac Toe'),
+            winMessage = createElement('p', undefined, 'message', `${message}`);
+
+        winContainer.appendChild(winHeader);
+        winHeader.appendChild(winHeading);
+        winHeader.appendChild(winMessage);
+        winHeader.appendChild(resetButton);
+        body.appendChild(winContainer);
     };
 
     // Provide the logic allowing a player to initialize the game
