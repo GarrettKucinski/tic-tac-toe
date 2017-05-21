@@ -109,6 +109,7 @@ const TicTacToe = (function($) {
 
             currentPlayer = playerOne;
             showStartScreen();
+            startGame();
             winContainer.remove();
         });
 
@@ -121,6 +122,14 @@ const TicTacToe = (function($) {
 
     // Provide the logic allowing a player to initialize the game
     const startGame = () => {
+        for (let box of boxes) {
+            box.classList.remove(`${playerOne.marker}`);
+            box.classList.remove(`${playerTwo.marker}`);
+        }
+
+        playerOne.moves.clear();
+        playerTwo.moves.clear();
+
         $(`#${currentPlayer.name}`)[0].classList.add('active');
         setPlayerBoxBackground();
     };
