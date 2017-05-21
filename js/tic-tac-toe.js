@@ -14,6 +14,9 @@ const TicTacToe = (function($) {
     // Specify an array of winning box combinations
     const winConditions = ['123', '456', '789', '147', '258', '369', '357', '159'];
 
+    // Provide a list of available moves for the AI
+    let availableMoves = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
     // Initialize player win check to false, since nobody has won yet
     let playerWon = false;
 
@@ -44,12 +47,11 @@ const TicTacToe = (function($) {
     const playerOne = new Player('player1', 'o.svg', 'box-filled-1', 'screen-win-one');
     const playerTwo = new Player('player2', 'x.svg', 'box-filled-2', 'screen-win-two', 'Computer');
 
+    // Generate a square for the computer to select
+    playerTwo.computerMove = _ => availableMoves[Math.floor(Math.random() * (availableMoves.length - 1))];
+
     // Set the initial currentPlayer to player one at the start of the game
     let currentPlayer = playerOne;
-
-    // REMOVE WHEN COMPLETE
-    console.log('player one: ', playerOne.realName);
-    console.log('player two: ', playerTwo.realName);
 
     // Provide a method for element creation
     const createElement = (name, id, className = '', content = '') => {
@@ -135,6 +137,7 @@ const TicTacToe = (function($) {
 
         gameMoves = 0;
         playerWon = false;
+        availableMoves = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         currentPlayer = playerOne;
 
         showStartScreen();
@@ -176,6 +179,16 @@ const TicTacToe = (function($) {
 
         $(`#${currentPlayer.name}`)[0].classList.add('active');
 
+        if (currentPlayer === playerTwo) {
+            let playerTwoMove = playerTwo.computerMove();
+            console.log('player two move: ', playerTwoMove);
+            setTimeout(_ => {
+                // boxes[playerTwoMove].click();
+                boxes[playerTwoMove].click();
+                console.log('moves left', availableMoves);
+            }, 500);
+        }
+
         return currentPlayer;
     };
 
@@ -183,11 +196,14 @@ const TicTacToe = (function($) {
     const playerTurn = _ => {
         const handleBoxClick = e => {
             if (!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
-                // console.log(gameMoves);
+                let boxSelected = boxes.indexOf(e.target);
+                console.log('selected box: ', boxSelected);
+                availableMoves.splice(availableMoves.indexOf(boxSelected), 1);
+
                 gameMoves++;
                 e.target.classList.add(`${currentPlayer.marker}`);
                 e.target.classList.remove(`${currentPlayer.name}-box-hover`);
-                currentPlayer.moves.add((boxes.indexOf(e.target) + 1).toString());
+                currentPlayer.moves.add((boxSelected + 1).toString());
 
                 if (gameMoves >= 5) {
                     playerWon = isWinningRow();
