@@ -174,7 +174,7 @@ const TicTacToe = (function($) {
                     playerWon = isWinningRow();
                 }
 
-                if (playerWon) {
+                if (playerWon || gameMoves === 9) {
                     gameOver();
                 }
 
