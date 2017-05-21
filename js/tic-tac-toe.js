@@ -83,6 +83,7 @@ const TicTacToe = (function($) {
         // playerWon = true;
         const winner = playerWon ? currentPlayer.winner : 'screen-win-tie';
         const message = playerWon ? 'Winner!' : 'It\'s a tie!';
+
         const winContainer = createElement('div', 'finish', `screen screen-win ${winner}`),
             winHeader = createElement('header', 'win-header', 'win-header'),
             resetButton = createElement('button', 'reset-button', 'button', 'New Game'),
