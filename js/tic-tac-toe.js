@@ -87,7 +87,10 @@ const TicTacToe = (function($) {
 
         startButton.addEventListener('click', _ => {
             const startContainer = document.getElementById('start-screen');
-            startContainer.remove();
+            startContainer.classList.add('fadeOut');
+            setTimeout(_ => {
+                startContainer.remove();
+            }, 1000);
         });
 
         startContainer.appendChild(startHeader);
@@ -140,9 +143,14 @@ const TicTacToe = (function($) {
         availableMoves = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         currentPlayer = playerOne;
 
-        showStartScreen();
-        winContainer.remove();
+        // showStartScreen();
         startGame();
+        setTimeout(_ => {
+            winContainer.classList.add('fadeOut');
+            setTimeout(_ => {
+                winContainer.remove();
+            }, 1000);
+        }, 250);
     };
 
     // If a player has won or there is a tie, display the game over screen
@@ -179,14 +187,14 @@ const TicTacToe = (function($) {
 
         $(`#${currentPlayer.name}`)[0].classList.add('active');
 
-        if (currentPlayer === playerTwo) {
+        if (currentPlayer === playerTwo && !playerWon) {
             let playerTwoMove = playerTwo.computerMove();
             console.log('player two move: ', playerTwoMove);
             setTimeout(_ => {
                 // boxes[playerTwoMove].click();
                 boxes[playerTwoMove].click();
                 console.log('moves left', availableMoves);
-            }, 500);
+            }, 1000);
         }
 
         return currentPlayer;

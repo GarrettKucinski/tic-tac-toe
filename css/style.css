@@ -211,3 +211,16 @@ h1 {
 .boxes .player2-box-hover {
     background-image: url(../img/x.svg);
 }
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.fadeOut {
+    animation: fadeOut 1s ease-out both;
+}
