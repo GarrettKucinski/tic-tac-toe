@@ -21,13 +21,17 @@ const TicTacToe = (function($) {
     // moves of both players to know when to check for a winner
     let gameMoves = 0;
 
+    // Change a string to TitleCase
+    const titleCase = (str) => str.replace(/(^|\s)[a-z]/g, function(f) { return f.toUpperCase(); });
+
     // Create the Player object
-    const Player = function(name, background, marker, winner) {
+    const Player = function(name, background, marker, winner, realName) {
         this.name = name;
         this.backgroundImage = background;
         this.marker = marker;
         this.winner = winner;
         this.moves = new Set();
+        this.realName = realName || titleCase(this.name);
     };
 
     // Add a method to retrieve the correct 
@@ -38,10 +42,14 @@ const TicTacToe = (function($) {
 
     // Instantiate a Player instace for each player
     const playerOne = new Player('player1', 'o.svg', 'box-filled-1', 'screen-win-one');
-    const playerTwo = new Player('player2', 'x.svg', 'box-filled-2', 'screen-win-two');
+    const playerTwo = new Player('player2', 'x.svg', 'box-filled-2', 'screen-win-two', 'Computer');
 
     // Set the initial currentPlayer to player one at the start of the game
     let currentPlayer = playerOne;
+
+    // REMOVE WHEN COMPLETE
+    console.log('player one: ', playerOne.realName);
+    console.log('player two: ', playerTwo.realName);
 
     // Provide a method for element creation
     const createElement = (name, id, className = '', content = '') => {
@@ -54,7 +62,7 @@ const TicTacToe = (function($) {
     };
 
     // Set the box background on hover depending on who the current player is
-    const setPlayerBoxBackground = function() {
+    const setPlayerBoxBackground = _ => {
         const handleBoxMouseOver = e => {
             if (!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
                 e.target.classList.add(`${currentPlayer.name}-box-hover`);
@@ -69,7 +77,7 @@ const TicTacToe = (function($) {
     };
 
     // Create the game start screen and display it
-    const showStartScreen = () => {
+    const showStartScreen = _ => {
         const startContainer = createElement('div', 'start-screen', 'screen screen-start'),
             startHeader = createElement('header', 'start-header', 'start-header'),
             startButton = createElement('button', 'start-button', 'button', 'Start Game'),
@@ -89,7 +97,7 @@ const TicTacToe = (function($) {
     // Loop through boxes and find selected ones
     // match current players selected box to a list
     // of winning box combinations
-    const isWinningRow = () => {
+    const isWinningRow = _ => {
         let viableBoxes;
         for (let combo of winConditions) {
             viableBoxes = 0;
@@ -106,12 +114,14 @@ const TicTacToe = (function($) {
     };
 
     // Provide the logic allowing a player to initialize the game
-    const startGame = () => {
+    const startGame = _ => {
         $(`#${currentPlayer.name}`)[0].classList.add('active');
         setPlayerBoxBackground();
     };
 
-    const resetGame = () => {
+    // Upon a tie or a player winning provide logic
+    // to reset the game state for a new game
+    const resetGame = _ => {
         const winContainer = document.getElementById('finish');
         $(`#${playerTwo.name}`)[0].classList.remove('active');
 
@@ -134,7 +144,7 @@ const TicTacToe = (function($) {
 
     // If a player has won or there is a tie, display the game over screen
     // Also display the New Game/Reset Button
-    const gameOver = () => {
+    const gameOver = _ => {
         const winner = playerWon ? currentPlayer.winner : 'screen-win-tie';
         const message = playerWon ? 'Winner!' : 'It\'s a tie!';
 
@@ -158,7 +168,7 @@ const TicTacToe = (function($) {
 
     // Call this function when a box is selected to end the current players 
     // turn and make the other player the current player
-    const switchPlayer = () => {
+    const switchPlayer = _ => {
         $(`#${currentPlayer.name}`)[0].classList.remove('active');
 
         currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
@@ -175,7 +185,6 @@ const TicTacToe = (function($) {
             if (!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
                 // console.log(gameMoves);
                 gameMoves++;
-                console.log(gameMoves);
                 e.target.classList.add(`${currentPlayer.marker}`);
                 e.target.classList.remove(`${currentPlayer.name}-box-hover`);
                 currentPlayer.moves.add((boxes.indexOf(e.target) + 1).toString());
