@@ -191,7 +191,6 @@ const TicTacToe = (function($) {
             let playerTwoMove = playerTwo.computerMove();
             console.log('player two move: ', playerTwoMove);
             setTimeout(_ => {
-                // boxes[playerTwoMove].click();
                 boxes[playerTwoMove].click();
                 console.log('moves left', availableMoves);
             }, 1000);
@@ -205,7 +204,6 @@ const TicTacToe = (function($) {
         const handleBoxClick = e => {
             if (!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
                 let boxSelected = boxes.indexOf(e.target);
-                console.log('selected box: ', boxSelected);
                 availableMoves.splice(availableMoves.indexOf(boxSelected), 1);
 
                 gameMoves++;
