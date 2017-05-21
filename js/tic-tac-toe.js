@@ -57,9 +57,9 @@ const TicTacToe = (function($) {
     // Create the game start screen and display it
     const showStartScreen = () => {
         const startContainer = createElement('div', 'start-screen', 'screen screen-start'),
-            startHeader = createElement('header', 'start-header'),
+            startHeader = createElement('header', 'start-header', 'start-header'),
             startButton = createElement('button', 'start-button', 'button', 'Start Game'),
-            startHeading = createElement('h1', 'start-heading', undefined, 'Tic Tac Toe');
+            startHeading = createElement('h1', 'start-heading', 'start-heading', 'Tic Tac Toe');
 
         startContainer.appendChild(startHeader);
         startHeader.appendChild(startHeading);
@@ -73,11 +73,11 @@ const TicTacToe = (function($) {
         // playerWon = true;
         const winner = playerWon ? currentPlayer.winner : 'screen-win-tie';
         const message = playerWon ? 'Winner!' : 'It\'s a tie!';
-        const winContainer = createElement('div', 'finish', `screen screen-win ${winner}`, undefined),
-            winHeader = createElement('header', 'win-header', 'win-header', undefined),
-            resetButton = createElement('button', undefined, 'button', 'New Game'),
+        const winContainer = createElement('div', 'finish', `screen screen-win ${winner}`),
+            winHeader = createElement('header', 'win-header', 'win-header'),
+            resetButton = createElement('button', 'reset-button', 'button', 'New Game'),
             winHeading = createElement('h1', 'win-heading', 'win-heading', 'Tic Tac Toe'),
-            winMessage = createElement('p', undefined, 'message', `${message}`);
+            winMessage = createElement('p', 'message', 'message', `${message}`);
 
         winContainer.appendChild(winHeader);
         winHeader.appendChild(winHeading);
