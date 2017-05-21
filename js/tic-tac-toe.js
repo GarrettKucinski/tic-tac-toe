@@ -6,7 +6,11 @@ const TicTacToe = (function($) {
     const boxList = $('.boxes')[0];
     const gameBoard = document.getElementById('board');
     const body = document.getElementsByTagName('body')[0];
+
+    const gameMoves = 0;
     let playerWon = false;
+
+    // Win conditions 123, 456, 789, 147, 258, 369, 159, 357
 
     // Create the Player object
     const Player = function(name, background, marker, winner) {
@@ -14,6 +18,7 @@ const TicTacToe = (function($) {
         this.backgroundImage = background;
         this.marker = marker;
         this.winner = winner;
+        this.moves = [];
     };
 
     // Add a method to retrieve the correct 
@@ -61,6 +66,11 @@ const TicTacToe = (function($) {
             startButton = createElement('button', 'start-button', 'button', 'Start Game'),
             startHeading = createElement('h1', 'start-heading', 'start-heading', 'Tic Tac Toe');
 
+        startButton.addEventListener('click', _ => {
+            const startContainer = document.getElementById('start-screen');
+            startContainer.remove();
+        });
+
         startContainer.appendChild(startHeader);
         startHeader.appendChild(startHeading);
         startHeader.appendChild(startButton);
@@ -79,6 +89,12 @@ const TicTacToe = (function($) {
             winHeading = createElement('h1', 'win-heading', 'win-heading', 'Tic Tac Toe'),
             winMessage = createElement('p', 'message', 'message', `${message}`);
 
+        resetButton.addEventListener('click', _ => {
+            const winContainer = document.getElementById('finish');
+            showStartScreen();
+            winContainer.remove();
+        });
+
         winContainer.appendChild(winHeader);
         winHeader.appendChild(winHeading);
         winHeader.appendChild(winMessage);
@@ -88,11 +104,6 @@ const TicTacToe = (function($) {
 
     // Provide the logic allowing a player to initialize the game
     const startGame = () => {
-        const startButton = document.getElementById('start-button');
-        const startContainer = document.getElementById('start-screen');
-        startButton.addEventListener('click', _ => {
-            startContainer.style.display = 'none';
-        });
         $(`#${currentPlayer.name}`)[0].classList.add('active');
         setPlayerBoxBackground();
     };
@@ -139,6 +150,5 @@ const TicTacToe = (function($) {
 
 // Start the game
 TicTacToe.init();
-
 // Initialize the first players turn
 TicTacToe.playerTurn();
