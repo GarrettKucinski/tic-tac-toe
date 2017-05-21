@@ -107,6 +107,14 @@ const TicTacToe = (function($) {
 
     // Provide the logic allowing a player to initialize the game
     const startGame = () => {
+        $(`#${currentPlayer.name}`)[0].classList.add('active');
+        setPlayerBoxBackground();
+    };
+
+    const resetGame = () => {
+        const winContainer = document.getElementById('finish');
+        $(`#${playerTwo.name}`)[0].classList.remove('active');
+
         for (let box of boxes) {
             box.classList.remove(`${playerOne.marker}`);
             box.classList.remove(`${playerTwo.marker}`);
@@ -115,8 +123,13 @@ const TicTacToe = (function($) {
         playerOne.moves.clear();
         playerTwo.moves.clear();
 
-        $(`#${currentPlayer.name}`)[0].classList.add('active');
-        setPlayerBoxBackground();
+        gameMoves = 0;
+        playerWon = false;
+        currentPlayer = playerOne;
+
+        showStartScreen();
+        winContainer.remove();
+        startGame();
     };
 
     // If a player has won or there is a tie, display the game over screen
@@ -131,20 +144,16 @@ const TicTacToe = (function($) {
             winHeading = createElement('h1', 'win-heading', 'win-heading', 'Tic Tac Toe'),
             winMessage = createElement('p', 'message', 'message', `${message}`);
 
-        resetButton.addEventListener('click', _ => {
-            const winContainer = document.getElementById('finish');
-
-            currentPlayer = playerOne;
-            showStartScreen();
-            startGame();
-            winContainer.remove();
-        });
-
         winContainer.appendChild(winHeader);
         winHeader.appendChild(winHeading);
         winHeader.appendChild(winMessage);
         winHeader.appendChild(resetButton);
         body.appendChild(winContainer);
+
+        resetButton.addEventListener('click', _ => {
+            resetGame();
+        });
+
     };
 
     // Call this function when a box is selected to end the current players 
@@ -164,8 +173,9 @@ const TicTacToe = (function($) {
     const playerTurn = _ => {
         const handleBoxClick = e => {
             if (!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
-
+                // console.log(gameMoves);
                 gameMoves++;
+                console.log(gameMoves);
                 e.target.classList.add(`${currentPlayer.marker}`);
                 e.target.classList.remove(`${currentPlayer.name}-box-hover`);
                 currentPlayer.moves.add((boxes.indexOf(e.target) + 1).toString());
