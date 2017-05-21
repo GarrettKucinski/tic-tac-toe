@@ -4,13 +4,21 @@ const TicTacToe = (function($) {
 
     // Select box list for use later
     const boxList = $('.boxes')[0];
+
+    // Select collection of individual boxes for later iteration
     const boxes = $('.box');
+
     // const gameBoard = document.getElementById('board');
     const body = document.getElementsByTagName('body')[0];
 
+    // Specify an array of winning box combinations
     const winConditions = ['123', '456', '789', '147', '258', '369', '357', '159'];
 
+    // Initialize player win check to false, since nobody has won yet
     let playerWon = false;
+
+    // Initlize a variable to keep track of the cumulative 
+    // moves of both players to know when to check for a winner
     let gameMoves = 0;
 
     // Create the Player object
@@ -78,6 +86,9 @@ const TicTacToe = (function($) {
         body.appendChild(startContainer);
     };
 
+    // Loop through boxes and find selected ones
+    // match current players selected box to a list
+    // of winning box combinations
     const isWinningRow = () => {
         let viableBoxes;
         for (let combo of winConditions) {
@@ -94,6 +105,22 @@ const TicTacToe = (function($) {
         return false;
     };
 
+    // Provide the logic allowing a player to initialize the game
+    const startGame = () => {
+        for (let box of boxes) {
+            box.classList.remove(`${playerOne.marker}`);
+            box.classList.remove(`${playerTwo.marker}`);
+        }
+
+        playerOne.moves.clear();
+        playerTwo.moves.clear();
+
+        $(`#${currentPlayer.name}`)[0].classList.add('active');
+        setPlayerBoxBackground();
+    };
+
+    // If a player has won or there is a tie, display the game over screen
+    // Also display the New Game/Reset Button
     const gameOver = () => {
         const winner = playerWon ? currentPlayer.winner : 'screen-win-tie';
         const message = playerWon ? 'Winner!' : 'It\'s a tie!';
@@ -118,20 +145,6 @@ const TicTacToe = (function($) {
         winHeader.appendChild(winMessage);
         winHeader.appendChild(resetButton);
         body.appendChild(winContainer);
-    };
-
-    // Provide the logic allowing a player to initialize the game
-    const startGame = () => {
-        for (let box of boxes) {
-            box.classList.remove(`${playerOne.marker}`);
-            box.classList.remove(`${playerTwo.marker}`);
-        }
-
-        playerOne.moves.clear();
-        playerTwo.moves.clear();
-
-        $(`#${currentPlayer.name}`)[0].classList.add('active');
-        setPlayerBoxBackground();
     };
 
     // Call this function when a box is selected to end the current players 
