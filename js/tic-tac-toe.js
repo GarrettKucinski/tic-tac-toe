@@ -4,13 +4,14 @@ const TicTacToe = (function($) {
 
     // Select box list for use later
     const boxList = $('.boxes')[0];
-    const gameBoard = document.getElementById('board');
+    const boxes = $('.box');
+    // const gameBoard = document.getElementById('board');
     const body = document.getElementsByTagName('body')[0];
 
-    const gameMoves = 0;
-    let playerWon = false;
+    const winConditions = ['123', '456', '789', '147', '258', '369', '357', '159'];
 
-    // Win conditions 123, 456, 789, 147, 258, 369, 159, 357
+    let playerWon = false;
+    let gameMoves = 0;
 
     // Create the Player object
     const Player = function(name, background, marker, winner) {
@@ -18,7 +19,7 @@ const TicTacToe = (function($) {
         this.backgroundImage = background;
         this.marker = marker;
         this.winner = winner;
-        this.moves = [];
+        this.moves = new Set();
     };
 
     // Add a method to retrieve the correct 
@@ -77,10 +78,23 @@ const TicTacToe = (function($) {
         body.appendChild(startContainer);
     };
 
+    const isWinningRow = () => {
+        let viableBoxes;
+        for (let combo of winConditions) {
+            viableBoxes = 0;
+            for (let num of combo) {
+                if (currentPlayer.moves.has(num)) {
+                    viableBoxes++;
+                }
+            }
+            if (viableBoxes === 3) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     const gameOver = () => {
-        // Remove these two variables when app is complete
-        // currentPlayer = playerTwo;
-        // playerWon = true;
         const winner = playerWon ? currentPlayer.winner : 'screen-win-tie';
         const message = playerWon ? 'Winner!' : 'It\'s a tie!';
 
@@ -92,6 +106,8 @@ const TicTacToe = (function($) {
 
         resetButton.addEventListener('click', _ => {
             const winContainer = document.getElementById('finish');
+
+            currentPlayer = playerOne;
             showStartScreen();
             winContainer.remove();
         });
@@ -126,7 +142,20 @@ const TicTacToe = (function($) {
     const playerTurn = _ => {
         const handleBoxClick = e => {
             if (!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
+
+                gameMoves++;
                 e.target.classList.add(`${currentPlayer.marker}`);
+                e.target.classList.remove(`${currentPlayer.name}-box-hover`);
+                currentPlayer.moves.add((boxes.indexOf(e.target) + 1).toString());
+
+                if (gameMoves >= 5) {
+                    playerWon = isWinningRow();
+                }
+
+                if (playerWon) {
+                    gameOver();
+                }
+
                 switchPlayer();
             }
         };
