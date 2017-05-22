@@ -202,10 +202,8 @@ const TicTacToe = (function($) {
 
         if (currentPlayer === playerTwo && !playerWon) {
             let playerTwoMove = playerTwo.computerMove();
-            console.log('player two move: ', playerTwoMove);
             setTimeout(_ => {
                 boxes[playerTwoMove].click();
-                console.log('moves left', availableMoves);
             }, 500);
         }
 
