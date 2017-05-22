@@ -69,7 +69,7 @@ const TicTacToe = (function($) {
     // Set the box background on hover depending on who the current player is
     const setPlayerBoxBackground = _ => {
         const handleBoxMouseOver = e => {
-            if (!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
+            if (!e.target.classList.contains(`${playerOne.marker}`) && !e.target.classList.contains(`${playerTwo.marker}`)) {
                 e.target.classList.add(`${currentPlayer.name}-box-hover`);
             }
         };
@@ -196,6 +196,10 @@ const TicTacToe = (function($) {
     const switchPlayer = _ => {
         $(`#${currentPlayer.name}`)[0].classList.remove('active');
 
+        for (let box of boxes) {
+            box.classList.remove(`${currentPlayer.name}-box-hover`);
+        }
+
         currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
 
         $(`#${currentPlayer.name}`)[0].classList.add('active');
@@ -204,7 +208,7 @@ const TicTacToe = (function($) {
             let playerTwoMove = playerTwo.computerMove();
             setTimeout(_ => {
                 boxes[playerTwoMove].click();
-            }, 300);
+            }, 350);
         }
 
         return currentPlayer;
@@ -213,7 +217,7 @@ const TicTacToe = (function($) {
     // Function to govern the logic of each players turn
     const playerTurn = _ => {
         const handleBoxClick = e => {
-            if (!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
+            if (!e.target.classList.contains(`${playerOne.marker}`) && !e.target.classList.contains(`${playerTwo.marker}`)) {
                 let boxSelected = boxes.indexOf(e.target);
                 availableMoves.splice(availableMoves.indexOf(boxSelected), 1);
 
