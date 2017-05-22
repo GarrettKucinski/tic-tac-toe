@@ -31,13 +31,17 @@ const TicTacToe = (function($) {
     const titleCase = (str) => str.replace(/(^|\s)[a-z]/g, function(f) { return f.toUpperCase(); });
 
     // Create the Player object
-    const Player = function(name, background, marker, winner, realName) {
-        this.name = name;
-        this.backgroundImage = background;
-        this.marker = marker;
-        this.winner = winner;
+    const Player = function(...args) {
+        [
+            this.name,
+            this.backgroundImage,
+            this.marker,
+            this.winner,
+            this.realName
+        ] = args;
+
+        this.hoverState = `${this.name}-box-hover`;
         this.moves = new Set();
-        this.realName = realName;
     };
 
     // Add a method to retrieve the correct 
@@ -70,11 +74,11 @@ const TicTacToe = (function($) {
     const setPlayerBoxBackground = _ => {
         const handleBoxMouseOver = e => {
             if (!e.target.classList.contains(`${playerOne.marker}`) && !e.target.classList.contains(`${playerTwo.marker}`)) {
-                e.target.classList.add(`${currentPlayer.name}-box-hover`);
+                e.target.classList.add(`${currentPlayer.hoverState}`);
             }
         };
         const handleBoxMouseLeave = e => {
-            e.target.classList.remove(`${currentPlayer.name}-box-hover`);
+            e.target.classList.remove(`${currentPlayer.hoverState}`);
         };
 
         boxList.addEventListener('mouseover', handleBoxMouseOver, true);
@@ -197,14 +201,14 @@ const TicTacToe = (function($) {
         $(`#${currentPlayer.name}`)[0].classList.remove('active');
 
         for (let box of boxes) {
-            box.classList.remove(`${currentPlayer.name}-box-hover`);
+            box.classList.remove(`${currentPlayer.hoverState}`);
         }
 
         currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
 
         $(`#${currentPlayer.name}`)[0].classList.add('active');
 
-        if (currentPlayer === playerTwo && !playerWon) {
+        if (currentPlayer === playerTwo && !playerWon && gameMoves !== 9) {
             let playerTwoMove = playerTwo.computerMove();
             setTimeout(_ => {
                 boxes[playerTwoMove].click();
@@ -223,7 +227,7 @@ const TicTacToe = (function($) {
 
                 gameMoves++;
                 e.target.classList.add(`${currentPlayer.marker}`);
-                e.target.classList.remove(`${currentPlayer.name}-box-hover`);
+                e.target.classList.remove(`${currentPlayer.hoverState}`);
                 currentPlayer.moves.add((boxSelected + 1).toString());
 
                 if (gameMoves >= 5) {
