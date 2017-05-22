@@ -8,6 +8,9 @@ const TicTacToe = (function($) {
     // Select collection of individual boxes for later iteration
     const boxes = $('.box');
 
+    // Select board header to append player name
+    const boardHeader = $('.board header')[0];
+
     // const gameBoard = document.getElementById('board');
     const body = document.getElementsByTagName('body')[0];
 
@@ -34,7 +37,7 @@ const TicTacToe = (function($) {
         this.marker = marker;
         this.winner = winner;
         this.moves = new Set();
-        this.realName = realName || titleCase(this.name);
+        this.realName = realName;
     };
 
     // Add a method to retrieve the correct 
@@ -83,10 +86,20 @@ const TicTacToe = (function($) {
         const startContainer = createElement('div', 'start-screen', 'screen screen-start'),
             startHeader = createElement('header', 'start-header', 'start-header'),
             startButton = createElement('button', 'start-button', 'button', 'Start Game'),
-            startHeading = createElement('h1', 'start-heading', 'start-heading', 'Tic Tac Toe');
+            startHeading = createElement('h1', 'start-heading', 'start-heading', 'Tic Tac Toe'),
+            startInput = createElement('input', 'start-input', 'start-input', undefined);
+
+        startInput.type = 'text';
+        startInput.placeholder = 'Please enter your name';
+
 
         startButton.addEventListener('click', _ => {
             const startContainer = document.getElementById('start-screen');
+            playerOne.realName = startInput.value ? startInput.value : 'Player One';
+
+            const playerName = createElement('p', 'player-name', 'player-name', `Welcome, ${titleCase(playerOne.realName)}!`);
+
+            boardHeader.appendChild(playerName);
             startContainer.classList.add('fadeOut');
             setTimeout(_ => {
                 startContainer.remove();
@@ -95,6 +108,7 @@ const TicTacToe = (function($) {
 
         startContainer.appendChild(startHeader);
         startHeader.appendChild(startHeading);
+        startHeader.appendChild(startInput);
         startHeader.appendChild(startButton);
         body.appendChild(startContainer);
     };
@@ -183,7 +197,6 @@ const TicTacToe = (function($) {
         $(`#${currentPlayer.name}`)[0].classList.remove('active');
 
         currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
-        setPlayerBoxBackground();
 
         $(`#${currentPlayer.name}`)[0].classList.add('active');
 

@@ -65,10 +65,32 @@ h1 {
 
 .screen-start .button {
     color: #54D17A;
+    display: block;
+    margin: 20px auto 0;
 }
 
 .screen-start h1+.button {
     margin-top: 5em;
+}
+
+.screen-start .start-input {
+    display: block;
+    width: 30%;
+    margin: 40px auto 0;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #3688C3;
+    outline: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 3rem;
+    text-align: center;
+}
+
+.screen-start .start-input::-webkit-input-placeholder {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 300;
 }
 
 .screen-win p {
@@ -210,6 +232,13 @@ h1 {
 
 .boxes .player2-box-hover {
     background-image: url(../img/x.svg);
+}
+
+.player-name {
+    font-size: 2rem;
+    margin: 40px auto 0;
+    width: 40%;
+    text-align: center;
 }
 
 @keyframes fadeOut {
