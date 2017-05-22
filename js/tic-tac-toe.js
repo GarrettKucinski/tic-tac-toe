@@ -206,7 +206,7 @@ const TicTacToe = (function($) {
             setTimeout(_ => {
                 boxes[playerTwoMove].click();
                 console.log('moves left', availableMoves);
-            }, 1000);
+            }, 500);
         }
 
         return currentPlayer;
