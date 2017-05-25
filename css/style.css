@@ -93,6 +93,12 @@ h1 {
     font-weight: 300;
 }
 
+.screen-start .start-input::-moz-placeholder {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 300;
+}
+
 .screen-win p {
     font-size: 6em;
     font-weight: 700;

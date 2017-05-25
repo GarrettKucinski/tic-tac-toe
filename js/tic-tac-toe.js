@@ -65,7 +65,7 @@ const TicTacToe = (function($) {
         const el = document.createElement(name);
         el.id = id;
         el.className = className;
-        el.innerText = content;
+        el.textContent = content;
 
         return el;
     };
@@ -91,7 +91,7 @@ const TicTacToe = (function($) {
             startHeader = createElement('header', 'start-header', 'start-header'),
             startButton = createElement('button', 'start-button', 'button', 'Start Game'),
             startHeading = createElement('h1', 'start-heading', 'start-heading', 'Tic Tac Toe'),
-            startInput = createElement('input', 'start-input', 'start-input', undefined);
+            startInput = createElement('input', 'start-input', 'start-input');
 
         startInput.type = 'text';
         startInput.placeholder = 'Please enter your name';
